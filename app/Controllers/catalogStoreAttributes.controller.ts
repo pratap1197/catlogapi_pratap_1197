@@ -3,8 +3,7 @@ import IController from '../Types/IController';
 import apiResponse from '../utilities/ApiResponse';
 import constants from "../Constants";
 import LOGGER from "../config/LOGGER";
-import  catalogService from '../Services/catalog.service';
-import userService from "../Services/User.service";
+const catalogService = require('../Services/catalog.service')
 
 
 
@@ -36,14 +35,14 @@ const add: IController = async (req, res) => {
 const update: IController = async (req, res) => {
     req.body.tenant_id = req.headers["tenant-id"]
     catalogService.updateCatalogStoreAttributes(req.body)
-        .then( (catalogStoreAttribute) => {
+        .then( (catalogStoreAttribute : any) => {
             if(catalogStoreAttribute instanceof Error){
                 console.log("Catalog Store Attribute", catalogStoreAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message':" Bad Request", "Result" : catalogStoreAttribute.message});
             }else{
                 res.status(200).json({'Status': 200 ,'Message':"Data updated successfully", "Result" : catalogStoreAttribute});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         LOGGER.info("error" , err)
         res.status(400).json({'Status': 400 ,'Message':" Bad Request"});
     });
@@ -51,7 +50,7 @@ const update: IController = async (req, res) => {
 
 const all: IController = async (req, res) => {
     catalogService.fetchAllCatalogStoreAttribute(req.headers["tenant-id"])
-        .then( (catalogStoreAttribute) => {
+        .then( (catalogStoreAttribute : any) => {
             if(catalogStoreAttribute instanceof Error){
                 console.log("Catalog Store Attribute", catalogStoreAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message':" Bad Request", "Result" : catalogStoreAttribute.message});
@@ -59,7 +58,7 @@ const all: IController = async (req, res) => {
             }else{
                 res.status(200).json({'Status': 200 ,'Message':"Catalog Store Attributes Data", "Result" : catalogStoreAttribute});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         LOGGER.info("error" , err)
         res.status(400).json({'Status': 400 ,'Message':" Bad Request"});
 
@@ -68,14 +67,14 @@ const all: IController = async (req, res) => {
 
 const getById: IController = async (req, res) => {
     catalogService.catalogStoreFetchById(Number(req.query.id), Number( req.headers["tenant-id"]))
-        .then( (catalogStoreAttribute) => {
+        .then( (catalogStoreAttribute : any) => {
             if(catalogStoreAttribute instanceof Error){
                 console.log("Catalog Store Attribute", catalogStoreAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message':" Bad Request", "Result" : catalogStoreAttribute.message});
             }else{
                 res.status(200).json({'Status': 200 ,'Message':"Catalog Store Attributes Data", "Result" : catalogStoreAttribute});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         LOGGER.info("error" , err)
         res.status(400).json({'Status': 400 ,'Message':" Bad Request"});
 

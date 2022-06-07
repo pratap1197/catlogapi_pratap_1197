@@ -2,7 +2,7 @@ import httpStatusCodes from 'http-status-codes';
 import IController from '../Types/IController';
 import apiResponse from '../utilities/ApiResponse';
 import constants from "../Constants";
-import  catalogService from '../Services/catalog.service';
+const catalogService = require('../Services/catalog.service')
 
 import LOGGER from "../config/LOGGER";
 
@@ -34,7 +34,7 @@ const add: IController = async (req, res) =>  {
 const update: IController = async (req, res) => {
      req.body.tenant_id = req.headers["tenant-id"]
     catalogService.updateCatalogAttributes(req.body)
-        .then((catalogAttribute) => {
+        .then((catalogAttribute: any) => {
             if(catalogAttribute instanceof Error){
                 LOGGER.error(catalogAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message': "Bad Request", "Result" : catalogAttribute.message});
@@ -42,7 +42,7 @@ const update: IController = async (req, res) => {
             }else{
                 res.status(200).json({'Status': 200 ,'Message':"Catalog Attributes updated successfully" });
             }
-        }).catch(err => {
+        }).catch(() => {
         res.status(400).json({'Status': 400 ,'Message':"Catalog Attributes update Failed" });
 
     });
@@ -50,16 +50,15 @@ const update: IController = async (req, res) => {
 
 const all: IController = async (req, res) => {
     catalogService.fetchAllCatalogAttributes(req.headers["tenant-id"])
-        .then( (catalogAttribute) => {
+        .then( (catalogAttribute: any) => {
             if(catalogAttribute instanceof Error){
                 console.log("User 2", catalogAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message': "Bad Request", "Result" : catalogAttribute.message});
 
             }else{
-                console.log("User 3", catalogAttribute)
                 res.status(200).json({'Status': 200 ,'Message': "Catalog Attributes data", "Result" : catalogAttribute});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
             LOGGER.error(err)
         res.status(400).json({'Status': 400 ,'Message': "Bad Request"});
 
@@ -68,7 +67,7 @@ const all: IController = async (req, res) => {
 
 const getById: IController = async (req, res) => {
     catalogService.catalogAttributesFetchById(Number(req.query.id), Number( req.headers["tenant-id"]))
-        .then( (catalogAttribute) => {
+        .then( (catalogAttribute: any) => {
             if(catalogAttribute instanceof Error){
                 LOGGER.error(catalogAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message': "Bad Request", "Result" : catalogAttribute.message});
@@ -76,7 +75,7 @@ const getById: IController = async (req, res) => {
             }else{
                 res.status(200).json({'Status': 200 ,'Message': "Catalog Attributes data", "Result" : catalogAttribute});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
             LOGGER.error(err)
         res.status(400).json({'Status': 400 ,'Message': "Bad Request"});
 

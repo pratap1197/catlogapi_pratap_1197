@@ -2,7 +2,7 @@ import httpStatusCodes from 'http-status-codes';
 import IController from '../Types/IController';
 import apiResponse from '../utilities/ApiResponse';
 import constants from "../Constants";
-import  catalogService from '../Services/catalog.service';
+const catalogService = require('../Services/catalog.service')
 
 import LOGGER from "../config/LOGGER";
 
@@ -32,7 +32,7 @@ const add: IController = async (req, res) => {
 
 const all: IController = async (req, res) => {
     catalogService.fetchAllCategoryProductMapping(req.headers["tenant-id"])
-        .then( (categoryProductMapping) => {
+        .then( (categoryProductMapping : any) => {
             if(categoryProductMapping instanceof Error){
                 console.log("Catalog Category Product Mapping", categoryProductMapping.message)
                 res.status(400).json({'Status': 400 ,'Message': "Bad Request", "Result" : categoryProductMapping.message});
@@ -40,7 +40,7 @@ const all: IController = async (req, res) => {
             }else{
                 res.status(200).json({'Status': 200 ,'Message': "Catalog Category Product Mapping data", "Result" : categoryProductMapping});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         LOGGER.info("error" , err)
         res.status(400).json({'Status': 400 ,'Message': "Bad Request"});
 
@@ -49,14 +49,14 @@ const all: IController = async (req, res) => {
 
 const fetchById: IController = async (req, res) => {
     catalogService.categoryProductMappingFetchById(Number(req.query.id), Number( req.headers["tenant-id"]))
-        .then( (catalogProductMapping) => {
+        .then( (catalogProductMapping : any) => {
             if(catalogProductMapping instanceof Error){
                 console.log("Catalog Category Product Mapping", catalogProductMapping.message)
                 res.status(400).json({'Status': 400 ,'Message': "Bad Request", "Result" : catalogProductMapping.message});
             }else{
                 apiResponse.result(res, catalogProductMapping, httpStatusCodes.OK);
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         LOGGER.info("error" , err)
         res.status(400).json({'Status': 400 ,'Message': "Bad Request"});
 
@@ -66,7 +66,7 @@ const fetchById: IController = async (req, res) => {
 const update: IController = async (req, res) => {
     req.body.tenant_id = req.headers["tenant-id"]
     catalogService.updateCategoryProductMapping(req.body)
-        .then( (categoryProductMapping) => {
+        .then( (categoryProductMapping : any) => {
             if(categoryProductMapping instanceof Error){
                 console.log("Catalog Category Product Mapping", categoryProductMapping.message)
                 res.status(400).json({'Status': 400 ,'Message': "Bad Request", "Result" : categoryProductMapping.message});
@@ -74,7 +74,7 @@ const update: IController = async (req, res) => {
             }else{
                 res.status(200).json({'Status': 200 ,'Message':" Data updated successfully","Result" : categoryProductMapping });
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         LOGGER.info("error" , err)
         res.status(400).json({'Status': 400 ,'Message':"Bad Request" });
 

@@ -5,6 +5,7 @@ export default {
         [Segments.BODY]: {
             product_id: Joi.number().required(),
             attribute_id: Joi.number().required(),
+            user_id : Joi.number().required(),
             attribute_value: Joi.string().required().min(1).message("Minimum 1 character required"),
         },
         [Segments.HEADERS]: Joi.object({
