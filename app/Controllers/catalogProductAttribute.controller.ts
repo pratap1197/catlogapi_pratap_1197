@@ -2,9 +2,8 @@ import httpStatusCodes from 'http-status-codes';
 import IController from '../Types/IController';
 import apiResponse from '../utilities/ApiResponse';
 import constants from "../Constants";
-import  catalogService from '../Services/catalog.service';
-import LOGGER from "../config/LOGGER";
-import userService from "../Services/User.service";
+const catalogService = require('../Services/catalog.service')
+
 
 const add: IController = async (req, res) => {
     let catalogProductAttribute: any;
@@ -35,7 +34,7 @@ const add: IController = async (req, res) => {
 
 const all: IController = async (req, res) => {
     catalogService.fetchAllCatalogProductAttribute(req.headers["tenant-id"])
-        .then( (catalogProductAttribute) => {
+        .then( (catalogProductAttribute : any) => {
             if(catalogProductAttribute instanceof Error){
                 console.log("Catalog Product Attribute", catalogProductAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message':" Bad Request.", "Result" : catalogProductAttribute.message});
@@ -43,7 +42,7 @@ const all: IController = async (req, res) => {
             }else{
                 res.status(200).json({'Status': 200 ,'Message':" Data from Catalog Product Attribute", "Result" : catalogProductAttribute});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         console.log("Error  ->", err);
         res.status(400).json({'Status': 400 ,'Message':" Bad Request."});
 
@@ -68,14 +67,14 @@ const update : IController = async (req, res) => {
 
 const getById: IController = async (req, res) => {
     catalogService.catalogProductFetchById(Number(req.query.id), Number( req.headers["tenant-id"]))
-        .then( (catalogProductAttribute) => {
+        .then( (catalogProductAttribute : any) => {
             if(catalogProductAttribute instanceof Error){
                 console.log("Catalog Product Attribute", catalogProductAttribute.message)
                 res.status(400).json({'Status': 400 ,'Message':" Bad Request.", "Result" : catalogProductAttribute.message});
             }else{
                 res.status(200).json({'Status': 200 ,'Message':" Catalog Product Attribute Data", "Result" : catalogProductAttribute});
             }
-        }).catch(err => {
+        }).catch((err: any) => {
         console.log("Error  ->", err);
         res.status(400).json({'Status': 400 ,'Message':" Bad Request."});
 
